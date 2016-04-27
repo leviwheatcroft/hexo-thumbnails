@@ -1,0 +1,29 @@
+{
+  "name": "hexo-thumbnails",
+  "version": "0.0.0",
+  "description": "hexo plugin to generate image thumbnails",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:leviwheatcroft/hexo-thumbnails.git"
+  },
+  "keywords": [
+    "hexo",
+    "thumbs",
+    "thumbnails"
+  ],
+  "author": "Levi Wheatcroft <levi@wht.cr>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leviwheatcroft/hexo-thumbnails/issues"
+  },
+  "homepage": "https://github.com/leviwheatcroft/hexo-thumbnails",
+  "dependencies": {
+    "gm": "^1.22.0",
+    "lodash": "^4.11.1",
+    "vow": "^0.4.12"
+  }
+}
