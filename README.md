@@ -2,8 +2,6 @@
 
 [Hexo](https://hexo.io/) plugin to generate thumbnails for images.
 
-Thumbnails will be written to the same folder as original images.
-
 ## Installation
 
 __plugin__
@@ -25,7 +23,13 @@ but I've not tested this plugin on windows so let me know how it goes.
 
 ## Usage
 
-Just generate as usual
+Thumbnails will be added to your source folder when you `hexo generate`. They
+will be placed in the same folder as the original image.
+
+A url for post cover images is added to posts as they're processed. So in the
+configuration example below, where `post.cover` contains the url for a cover
+image, `post.largeThumb_cover` and `post.smallThumb_cover` will contain urls
+for the
 
 ## Configuration
 
@@ -76,6 +80,8 @@ an image will be generated for each profile. So in the example above,
 I haven't tested them all, but in theory you can use any of the myriad
 manipulation methods listed in [gm](https://www.npmjs.com/package/gm), this
 plugin simply applies all the methods listed in a profile to the gm instance.
+
+
 
 ## License
 

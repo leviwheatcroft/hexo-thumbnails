@@ -3,6 +3,8 @@ const _         = require('lodash')
 const gm        = require('gm').subClass({imageMagick: true})
 const path      = require('path')
 const vow       = require('vow')
+const url       = require('url')
+const util      = require('util')
 
 /**
  * profiles
@@ -90,7 +92,33 @@ let processor = function(file) {
     })
   )
 }
-
+/**
+ * register processors
+ */
 _.each(options.masks, function(mask) {
   hexo.extend.processor.register(mask, processor)
 })
+
+/**
+ * filter
+ * this filter creates frontmatter variables for cover thumbnails
+ */
+hexo.extend.filter.register('before_generate', function() {
+  // some naughty direct database access
+  let posts = hexo.model('Post').toArray()
+  return vow.all(_.map(posts, function(post) {
+    if (!post.cover) {
+      return
+    }
+    return vow.all(_.map(options.profiles, function(profile, profileName) {
+      post[profileName + '_cover'] = url.resolve(
+        path.dirname(post.cover),
+        profileName + '-' + path.basename(post.cover)
+      )
+      return post.save()
+    }))
+  }))
+
+})
+
+
