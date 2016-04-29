@@ -111,7 +111,7 @@ hexo.extend.filter.register('before_generate', function() {
       return
     }
     return vow.all(_.map(options.profiles, function(profile, profileName) {
-      post[profileName + '_cover'] = url.resolve(
+      post[profileName + 'Cover'] = url.resolve(
         path.dirname(post.cover),
         profileName + '-' + path.basename(post.cover)
       )
