@@ -29,7 +29,7 @@ will be placed in the same folder as the original image.
 A url for post cover images is added to posts as they're processed. So in the
 configuration example below, where `post.cover` contains the url for a cover
 image, `post.largeThumb_cover` and `post.smallThumb_cover` will contain urls
-for the
+for the thumbnails.
 
 ## Configuration
 
@@ -53,7 +53,9 @@ thumbnails:
 ```
 
 __masks__
+
 default: all jpg, jpeg, gif, png files
+
 Be careful with this. You can list the masks (rules?) you want to use to check
 which files to create thumbnails for. All profiles will be run for all matches.
 If one file matches multiple masks it will be processed multiple times.
@@ -70,7 +72,9 @@ a single mask like `\.tiff$`, then `jpg`s will not be processed unless you add
 a mask for them.
 
 __profiles__
+
 default: resize to 200x200
+
 an image will be generated for each profile. So in the example above,
 `images/original.jpg` would generate two thumbnails:
 
