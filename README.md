@@ -5,11 +5,13 @@
 ## Installation
 
 __plugin__
+
 ```
   npm i --save hexo-thumbnails
 ```
 
 __imagemagick__
+
 You'll need an imagemagick instance to handle the thumbnail creation.
 
 debian:
