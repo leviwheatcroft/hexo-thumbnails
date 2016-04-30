@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>.README.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "", thisFile = ".README.md", defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#%24%7Bpkg.name%7D">${pkg.name}</a>
+      </div>
+      <div class="heading h2">
+        <a href="#install">Install</a>
+      </div>
+      <div class="heading h2">
+        <a href="#usage">Usage</a>
+      </div>
+      <div class="heading h2">
+        <a href="#configuration">Configuration</a>
+      </div>
+      <div class="heading h2">
+        <a href="#api">Api</a>
+      </div>
+      <div class="heading h2">
+        <a href="#author">Author</a>
+      </div>
+      <div class="heading h2">
+        <a href="#contributing">Contributing</a>
+      </div>
+      <div class="heading h2">
+        <a href="#license">License</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="docs markdown">
+<div class="pilwrap" id="%24%7Bpkg.name%7D">
+  <h1>
+    <a href="#%24%7Bpkg.name%7D" name="%24%7Bpkg.name%7D" class="pilcrow">&#182;</a>
+    ${pkg.name}
+  </h1>
+</div>
+
+
+<p>${badge('nodei')}</p>
+
+<p>${badge('npm')}</p>
+
+<p><a href="https://hexo.io/">Hexo</a> plugin to generate thumbnails for images.</p>
+
+<ul>
+<li>can use any <a href="https://www.npmjs.com/package/gm">gm</a> / imagemagick manipulation
+functions</li>
+<li>writes thumbnails source directory along side original image</li>
+<li>makes thumbnail url available as frontmatter variable</li>
+</ul>
+
+
+<div class="pilwrap" id="install">
+  <h2>
+    <a href="#install" name="install" class="pilcrow">&#182;</a>
+    Install
+  </h2>
+</div>
+
+
+<p><strong>plugin</strong></p>
+
+<div class='highlight'><pre><code language=''>  npm i --save ${pkg.name}
+</code></pre></div>
+
+<p><strong>imagemagick</strong></p>
+
+<p>You'll need an imagemagick instance to handle the thumbnail creation.</p>
+
+<p>debian:</p>
+
+<div class='highlight'><pre><code language=''>  sudo apt-get install imagemagick
+</code></pre></div>
+
+<p>On windows you can try installing
+<a href="http://www.imagemagick.org/script/binary-releases.php">an imagemagick binary</a>
+but I've not tested this plugin on windows so let me know how it goes.</p>
+
+
+<div class="pilwrap" id="usage">
+  <h2>
+    <a href="#usage" name="usage" class="pilcrow">&#182;</a>
+    Usage
+  </h2>
+</div>
+
+
+<p>Thumbnails will be added to your source folder when you <code>hexo generate</code>. They
+will be placed in the same folder as the original image.</p>
+
+<p>A url for post cover images is added to posts as they're processed. So in the
+configuration example below, where <code>post.cover</code> contains the url for a cover
+image, <code>post.largeThumb_cover</code> and <code>post.smallThumb_cover</code> will contain urls
+for the thumbnails.</p>
+
+
+<div class="pilwrap" id="configuration">
+  <h2>
+    <a href="#configuration" name="configuration" class="pilcrow">&#182;</a>
+    Configuration
+  </h2>
+</div>
+
+
+<p><strong>example</strong></p>
+
+
+<div class="highlight"><pre><code><span class="l-Scalar-Plain">thumbnails</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">masks</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">\.jpg$</span>
+  <span class="l-Scalar-Plain">profiles</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">largeThumb</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">resize</span><span class="p-Indicator">:</span>
+        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">400</span>
+        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">400</span>
+      <span class="l-Scalar-Plain">blur</span><span class="p-Indicator">:</span>
+        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">10</span>
+    <span class="l-Scalar-Plain">smallThumb</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">resize</span><span class="p-Indicator">:</span>
+        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">400</span>
+        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">400</span>
+</code></pre></div>
+
+
+
+<p><strong>masks</strong></p>
+
+<p>default: all jpg, jpeg, gif, png files</p>
+
+<p>Be careful with this. You can list the masks (rules?) you want to use to check
+which files to create thumbnails for. All profiles will be run for all matches.
+If one file matches multiple masks it will be processed multiple times.</p>
+
+<p>You can use express style or regex style masks. See
+<a href="https://github.com/hexojs/hexo-util#patternrule">Hexo Patterns</a> for additional
+information.</p>
+
+<p>you can just write a regex like <code>\.tiff$</code> (although that's not mentioned in the
+linked doc.)</p>
+
+<p>If you specify any mask, the default will be overwritten. So if you specify a
+a single mask like <code>\.tiff$</code>, then <code>jpg</code>s will not be processed unless you add
+a mask for them.</p>
+
+<p><strong>profiles</strong></p>
+
+<p>default: resize to 200x200</p>
+
+<p>an image will be generated for each profile. So in the example above,
+<code>images/original.jpg</code> would generate two thumbnails:</p>
+
+<ul>
+<li><code>images/largeThumb-original.jpg</code>, and</li>
+<li><code>images/smallThumb-original.jpg</code></li>
+</ul>
+
+<p>I haven't tested them all, but in theory you can use any of the myriad
+manipulation methods listed in <a href="https://www.npmjs.com/package/gm">gm</a>, this
+plugin simply applies all the methods listed in a profile to the gm instance.</p>
+
+
+<div class="pilwrap" id="api">
+  <h2>
+    <a href="#api" name="api" class="pilcrow">&#182;</a>
+    Api
+  </h2>
+</div>
+
+
+<p>See the <a href="${pkg.homepage}">fancy annotated code</a></p>
+
+
+<div class="pilwrap" id="author">
+  <h2>
+    <a href="#author" name="author" class="pilcrow">&#182;</a>
+    Author
+  </h2>
+</div>
+
+
+<p>Levi Wheatcroft <a href="&#x6D;&#97;&#x69;&#108;&#x74;&#111;:&#108;e&#118;&#x69;&#x40;w&#x68;&#116;&#x2E;&#99;&#114;">&#108;e&#118;&#x69;&#x40;w&#x68;&#116;&#x2E;&#99;&#114;</a></p>
+
+
+<div class="pilwrap" id="contributing">
+  <h2>
+    <a href="#contributing" name="contributing" class="pilcrow">&#182;</a>
+    Contributing
+  </h2>
+</div>
+
+
+<p>Contributions welcome; Please submit all pull requests against the master
+branch.</p>
+
+
+<div class="pilwrap" id="license">
+  <h2>
+    <a href="#license" name="license" class="pilcrow">&#182;</a>
+    License
+  </h2>
+</div>
+
+
+<ul>
+<li><strong>MIT</strong> : <a href='http://opensource.org/licenses/MIT'>http://opensource.org/licenses/MIT</a></li>
+</ul></div>
+  </div>
+</body>
+</html>

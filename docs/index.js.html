@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>index.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "", thisFile = "index.js", defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h2">
+        <a href="#processor">processor</a>
+      </div>
+      <div class="heading h2">
+        <a href="#register%20processors">register processors</a>
+      </div>
+      <div class="heading h2">
+        <a href="#register%20filter">register filter</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>index.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="s1">&#39;use strict&#39;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>require all the things</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kr">const</span> <span class="nx">_</span>         <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;lodash&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">gm</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gm&#39;</span><span class="p">).</span><span class="nx">subClass</span><span class="p">({</span><span class="nx">imageMagick</span><span class="o">:</span> <span class="kc">true</span><span class="p">})</span>
+<span class="kr">const</span> <span class="nx">path</span>      <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">vow</span>       <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;vow&#39;</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>profiles
+the profiles structure for hexo-thumbnails can contain one or more profiles
+this default structure is for example more than anything else, it is expected
+that users would specify their own <code>thumbnail</code> profile, which would over
+write everything here. The plugin makes no attempt to merge options.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">let</span> <span class="nx">options</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span>
+  <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>default mask to match common image types</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">masks</span><span class="o">:</span> <span class="p">[</span>
+      <span class="sr">/\.(gif|jpg|jpeg|png)$/i</span>
+    <span class="p">],</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>default profile</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">profiles</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">thumb</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">resize</span><span class="o">:</span> <span class="p">[</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span> <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">hexo</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">thumbnails</span>
+<span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="processor">
+  <h2>
+    <a href="#processor" name="processor" class="pilcrow">&#182;</a>
+    processor
+  </h2>
+</div>
+
+
+<p>a hexo processor is called for each file in <code>source_dir</code> which matches the
+mask for that processor.
+in this case, a processor is created for each mask listed in options, so for
+each file matching any of those masks we create a thumbnail for each profile</p>
+  </div>
+  <div class="body"><p>see:
+<a href='https://hexo.io/api/processor.html'>https://hexo.io/api/processor.html</a>
+<a href='https://hexo.io/api/box.html'>https://hexo.io/api/box.html</a></p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">file</span>
+      <span class="dox_type">File</span>
+      <span>hexo File instance</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>Promise</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">let</span> <span class="nx">processor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>avoid generated thumbnails being processed</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">let</span> <span class="nx">isThumbnail</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">profiles</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">profile</span><span class="p">,</span> <span class="nx">profileName</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;^&#39;</span> <span class="o">+</span> <span class="nx">profileName</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="p">).</span><span class="nx">test</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">path</span><span class="p">))</span>
+  <span class="p">})</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">isThumbnail</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">vow</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">vow</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>apply all options.profiles to each file</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">profiles</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">profile</span><span class="p">,</span> <span class="nx">profileName</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">writeOp</span> <span class="o">=</span> <span class="nx">vow</span><span class="p">.</span><span class="nx">defer</span><span class="p">()</span>
+      <span class="kd">let</span> <span class="nx">sourcePath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span>
+        <span class="nx">hexo</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">source_dir</span><span class="p">,</span>
+        <span class="nx">file</span><span class="p">.</span><span class="nx">path</span>
+      <span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>notice the destination is still the source folder
+it's best to have hexo transfer the file to public otherwise bad things
+will happen</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">let</span> <span class="nx">destPath</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span>
+        <span class="nx">hexo</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">source_dir</span><span class="p">,</span>
+        <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">path</span><span class="p">),</span>
+        <span class="nx">profileName</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">path</span><span class="p">)</span>
+      <span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>create gm instance</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">let</span> <span class="nx">image</span> <span class="o">=</span> <span class="nx">gm</span><span class="p">(</span><span class="nx">sourcePath</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>apply methods listed in the profile to gm instance</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">profile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">,</span> <span class="nx">method</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">image</span><span class="p">[</span><span class="nx">method</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">image</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="p">})</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>write created image</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">image</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">destPath</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+          <span class="k">throw</span> <span class="nx">err</span>
+        <span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>getting a little hacky here, <code>hexo.source</code> is an instance of
+Box <a href='https://git.io/vww9o'>https://git.io/vww9o</a> _processFile is a private method, so it's
+probably a little naughty to use this in a plugin</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">hexo</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">_processFile</span><span class="p">(</span><span class="nx">hexo</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">File</span><span class="p">.</span><span class="nx">TYPE_CREATE</span><span class="p">,</span> <span class="nx">destPath</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nx">writeOp</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()</span>
+        <span class="p">})</span>
+      <span class="p">})</span>
+      <span class="k">return</span> <span class="nx">writeOp</span>
+    <span class="p">})</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="register%20processors">
+  <h2>
+    <a href="#register%20processors" name="register%20processors" class="pilcrow">&#182;</a>
+    register processors
+  </h2>
+</div>
+
+
+<p>registers a processor for each mask</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">mask
+</span>
+      <span class="dox_type">String</span>
+      <span class="dox_type">Regex</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">masks</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mask</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">hexo</span><span class="p">.</span><span class="nx">extend</span><span class="p">.</span><span class="nx">processor</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">mask</span><span class="p">,</span> <span class="nx">processor</span><span class="p">)</span>
+<span class="p">})</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="register%20filter">
+  <h2>
+    <a href="#register%20filter" name="register%20filter" class="pilcrow">&#182;</a>
+    register filter
+  </h2>
+</div>
+
+
+<p>this filter creates frontmatter variables for cover thumbnails</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">hexo</span><span class="p">.</span><span class="nx">extend</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s1">&#39;before_generate&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>some naughty direct database access</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">let</span> <span class="nx">posts</span> <span class="o">=</span> <span class="nx">hexo</span><span class="p">.</span><span class="nx">model</span><span class="p">(</span><span class="s1">&#39;Post&#39;</span><span class="p">).</span><span class="nx">toArray</span><span class="p">()</span>
+  <span class="k">return</span> <span class="nx">vow</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">posts</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">post</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">post</span><span class="p">.</span><span class="nx">cover</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">vow</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">profiles</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">profile</span><span class="p">,</span> <span class="nx">profileName</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">post</span><span class="p">[</span><span class="nx">profileName</span> <span class="o">+</span> <span class="s1">&#39;Cover&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">post</span><span class="p">.</span><span class="nx">cover</span><span class="p">),</span>
+        <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+        <span class="nx">profileName</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">post</span><span class="p">.</span><span class="nx">cover</span><span class="p">)</span>
+      <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">post</span><span class="p">.</span><span class="nx">save</span><span class="p">()</span>
+    <span class="p">}))</span>
+  <span class="p">}))</span>
+
+<span class="p">})</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
