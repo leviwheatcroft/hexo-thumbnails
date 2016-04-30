@@ -91,12 +91,6 @@
       "require"     : true,
       "exports"     : true,
       "module"      : true,
-      "Logger"      : true,
-      "Underscore"  : true,
-      "SpreadsheetApp" : true,
-      "DriveApp"       : true,
-      "HtmlService"    : true,
-      "Utilities"      : true,
       "hexo"          : true
 
     }        // additional predefined global variables

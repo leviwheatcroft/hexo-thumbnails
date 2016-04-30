@@ -1,10 +1,9 @@
 'use strict'
+// require all the things
 const _         = require('lodash')
 const gm        = require('gm').subClass({imageMagick: true})
 const path      = require('path')
 const vow       = require('vow')
-const url       = require('url')
-const util      = require('util')
 
 /**
  * profiles
@@ -19,6 +18,7 @@ let options = _.extend(
     masks: [
       /\.(gif|jpg|jpeg|png)$/i
     ],
+    // default profile
     profiles: {
       thumb: {
         resize: [ 200, 200 ]
@@ -29,7 +29,7 @@ let options = _.extend(
 )
 
 /**
- * processor
+ * ## processor
  * a hexo processor is called for each file in `source_dir` which matches the
  * mask for that processor.
  * in this case, a processor is created for each mask listed in options, so for
@@ -38,6 +38,9 @@ let options = _.extend(
  * see:
  * https://hexo.io/api/processor.html
  * https://hexo.io/api/box.html
+ *
+ * @param {File} file hexo File instance
+ * @return Promise
  */
 let processor = function(file) {
 
@@ -93,14 +96,16 @@ let processor = function(file) {
   )
 }
 /**
- * register processors
+ * ## register processors
+ * registers a processor for each mask
+ * @param {String|Regex} mask
  */
 _.each(options.masks, function(mask) {
   hexo.extend.processor.register(mask, processor)
 })
 
 /**
- * filter
+ * ## register filter
  * this filter creates frontmatter variables for cover thumbnails
  */
 hexo.extend.filter.register('before_generate', function() {
@@ -111,10 +116,11 @@ hexo.extend.filter.register('before_generate', function() {
       return
     }
     return vow.all(_.map(options.profiles, function(profile, profileName) {
-      post[profileName + 'Cover'] = url.resolve(
+      post[profileName + 'Cover'] = [
         path.dirname(post.cover),
+        '/',
         profileName + '-' + path.basename(post.cover)
-      )
+      ].join('')
       return post.save()
     }))
   }))

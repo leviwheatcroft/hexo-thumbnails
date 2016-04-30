@@ -4,7 +4,9 @@
   "description": "hexo plugin to generate image thumbnails",
   "main": "index.js",
   "scripts": {
-    "test": ""
+    "test": "./node_modules/mocha/bin/mocha -R list",
+    "docs": "./node_modules/docker/docker -o ./docs -x test,node_modules,notes,docs,.git",
+    "readme": "node ./node_modules/.bin/node-readme"
   },
   "repository": {
     "type": "git",
@@ -20,10 +22,17 @@
   "bugs": {
     "url": "https://github.com/leviwheatcroft/hexo-thumbnails/issues"
   },
-  "homepage": "https://github.com/leviwheatcroft/hexo-thumbnails",
+  "homepage": "http://leviwheatcroft.github.io/hexo-thumbnails/docs/index.js.html",
   "dependencies": {
     "gm": "^1.22.0",
     "lodash": "^4.11.1",
     "vow": "^0.4.12"
+  },
+  "devDependencies": {
+    "docker": "^0.2.14",
+    "mocha": "^2.4.5",
+    "mocha-jshint": "^2.3.1",
+    "node-readme": "^0.1.9",
+    "unit.js": "^2.0.0"
   }
 }
