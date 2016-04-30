@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha -R list",
-    "docs": "./node_modules/docker/docker -o ./docs -x test,node_modules,notes,docs,.git",
+    "docs": "./node_modules/docker/docker -o ./docs -x .README.md,README.md,test,node_modules,notes,docs,.git",
     "readme": "node ./node_modules/.bin/node-readme"
   },
   "repository": {
