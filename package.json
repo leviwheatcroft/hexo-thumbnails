@@ -1,6 +1,6 @@
 {
   "name": "hexo-thumbnails",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "hexo plugin to generate image thumbnails",
   "main": "index.js",
   "scripts": {
