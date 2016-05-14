@@ -4,6 +4,20 @@ const _         = require('lodash')
 const gm        = require('gm').subClass({imageMagick: true})
 const path      = require('path')
 const vow       = require('vow')
+const debug     = require('debug')
+const util      = require('util')
+
+/**
+ * ## debugging
+ * For debuging output to stdout, set debug environment variable a la:
+ * `DEBUG=superagent-throttle:* node myapp.js`
+ */
+const dbg = {
+  fn:     debug('hexo-thumbnails:fn'),
+  config: debug('hexo-thumbnails:config')
+}
+
+
 
 /**
  * profiles
@@ -57,7 +71,7 @@ let processor = function(file) {
     _.map(options.profiles, function(profile, profileName) {
       let writeOp = vow.defer()
       let sourcePath = path.join(
-        hexo.config.source_dir,
+        hexo.source_dir,
         file.path
       )
 
@@ -65,7 +79,7 @@ let processor = function(file) {
       // it's best to have hexo transfer the file to public otherwise bad things
       // will happen
       let destPath = path.join(
-        hexo.config.source_dir,
+        hexo.source_dir,
         path.dirname(file.path),
         profileName + '-' + path.basename(file.path)
       )

@@ -24,6 +24,7 @@
   },
   "homepage": "http://leviwheatcroft.github.io/hexo-thumbnails/docs/index.js.html",
   "dependencies": {
+    "debug": "^2.2.0",
     "gm": "^1.22.0",
     "lodash": "^4.11.1",
     "vow": "^0.4.12"
