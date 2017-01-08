@@ -35,5 +35,8 @@
     "mocha-jshint": "^2.3.1",
     "node-readme": "^0.1.9",
     "unit.js": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   }
 }

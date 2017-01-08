@@ -11,6 +11,10 @@
  * writes thumbnails source directory along side original image
  * makes thumbnail url available as frontmatter variable
 
+## Deprecated
+
+Please open an issue if you would like to take ownership.
+
 ## Install
 
 __plugin__
